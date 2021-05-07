@@ -7,13 +7,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-img
-      src="https://media-exp1.licdn.com/dms/image/C4E03AQHSZGre8sOvUQ/profile-displayphoto-shrink_100_100/0/1602531496335?e=1625702400&v=beta&t=iVKEQ2fA-4khfLAXou04N1qt6gqFOlfd-LDLFYgUWKE">
-    </ion-img>
+  <ion-card button *ngFor="let activity of (activityList | async)">
+    <ion-img [src]="activity.cropped"></ion-img>
     <ion-card-header>
       <ion-card-title>
-        Kameron's Activity
+        {{activity.name}}
       </ion-card-title>
     </ion-card-header>
   </ion-card>
