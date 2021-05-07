@@ -7,13 +7,13 @@ import { HttpClient } from '@angular/common/http';
 export class ActivityService {
   constructor(private _httpClient: HttpClient) { }
 
-  getActivity() {
-
+  getActivity(activityID: string) {
+    return this._httpClient.get(API + '/id/' + activityID);
   }
 
   getAllActivities() {
-
+    return this._httpClient.get(API);
   }
 }
 
-const API = "";
+const API = "https://orangevalleycaa.org/api/videos";
