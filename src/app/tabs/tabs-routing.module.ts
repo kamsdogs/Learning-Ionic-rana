@@ -13,7 +13,11 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
-          }  
+          },
+          {
+            path: 'activity-details',
+            loadChildren: () => import('../activity-details/activity-details.module').then(m => m.ActivityDetailsPageModule)
+          }
         ]
       },
       {
@@ -41,4 +45,4 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }
