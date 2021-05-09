@@ -7,9 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { ActivityDetailsPageRoutingModule } from './activity-details-routing.module';
 
 import { ActivityDetailsPage } from './activity-details.page';
+import { ActivityVideoPageModule } from '../activity-video/activity-video.module';
 
 @NgModule({
   imports: [
+    ActivityVideoPageModule,
     CommonModule,
     FormsModule,
     IonicModule,
