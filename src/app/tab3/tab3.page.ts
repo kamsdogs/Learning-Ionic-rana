@@ -19,25 +19,27 @@ export class Tab3Page {
 
   async selectImageSource() {
 
-    const alert = await this._alertController.create({
-      header: "Select Source",
-      message: "Pick a source for your image",
-      buttons: [
-        {
-          text: "Select Photo",
-          handler: async () => {
-            const image = await Camera.getPhoto({
-              quality: 100,
-              allowEditing: true,
-              correctOrientation: true,
-              source: CameraSource.Prompt,
-              resultType: CameraResultType.Uri
-            });
-            this.myProfileImage = image.webPath
+    try {
+      const alert = await this._alertController.create({
+        header: "Select Source",
+        message: "Pick a source for your image",
+        buttons: [
+          {
+            text: "Select Photo",
+            handler: async () => {
+              const image = await Camera.getPhoto({
+                quality: 100,
+                allowEditing: true,
+                correctOrientation: true,
+                source: CameraSource.Prompt,
+                resultType: CameraResultType.Uri
+              });
+              this.myProfileImage = image.webPath
+            }
           }
-        }
-      ]
-    });
-    await alert.present();
+        ]
+      });
+      await alert.present();
+    } catch (error) { console.error(error); }
   }
 }
