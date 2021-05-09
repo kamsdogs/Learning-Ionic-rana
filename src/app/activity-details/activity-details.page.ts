@@ -30,6 +30,12 @@ export class ActivityDetailsPage implements OnInit {
     const videoModal = await this._modalController.create({
       component: ActivityVideoPage
     });
-    return await videoModal.present();
+
+    return await this.activityDetail.subscribe((activity)=>{
+      videoModal.componentProps = {
+        videoURL: activity.video_url
+      };
+      return videoModal.present();
+    });
   }
 }
