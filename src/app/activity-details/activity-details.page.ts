@@ -6,6 +6,8 @@ import { ActivityVideoPage } from '../activity-video/activity-video.page';
 import { ActivityService } from '../activity.service';
 import { Activity } from '../types';
 import { Plugins } from '@capacitor/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 const { Share } = Plugins;
 
 
@@ -19,6 +21,8 @@ export class ActivityDetailsPage implements OnInit {
 
 
   constructor(
+    private _angularFireStore: AngularFirestore,
+    private _angularFireAuth: AngularFireAuth,
     private _router: Router,
     private _modalController: ModalController,
     activityService: ActivityService,
@@ -50,6 +54,27 @@ export class ActivityDetailsPage implements OnInit {
       text: "Check out this video!",
       url: urlFromPage,
       dialogTitle: 'Share This Content'
+    });
+  }
+
+  addToFavourites() {
+    this.activityDetail.subscribe(async (activity) => {
+      this._angularFireStore
+        .collection("favourites")
+        .doc((await this._angularFireAuth.currentUser).uid)
+        .collection("favourites", (ref) => {
+          return ref.where("id", "==", activity.id)
+        })
+        .get()
+        .subscribe(async (doc) => {
+          if (doc.empty) {
+            this._angularFireStore
+              .collection("favourites")
+              .doc((await this._angularFireAuth.currentUser).uid)
+              .collection("favourites")
+              .add(activity);
+          }
+        })
     });
   }
 }

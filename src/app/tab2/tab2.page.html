@@ -1,19 +1,17 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Doom
+      Favourites
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-img
-      src="https://external-preview.redd.it/B4ny8zd86F6LjICWrYYEAZhH4EkwkCgR08PvjKu8Yok.jpg?auto=webp&s=b4e13270c8ff5ef569a8f8dcda633cbaf8d14a4f">
-    </ion-img>
+  <ion-card [routerLink]="['activity-details', activity.id]" button *ngFor="let activity of (favouriteActivityList | async)">
+    <ion-img [src]="activity.cropped"></ion-img>
     <ion-card-header>
       <ion-card-title>
-        DOOM
+        {{activity.name}}
       </ion-card-title>
     </ion-card-header>
   </ion-card>
