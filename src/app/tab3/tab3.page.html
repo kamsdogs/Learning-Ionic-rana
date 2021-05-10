@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-avatar (click)="selectImageSource()" class="profile-picture">
-    <ion-img [src]="myProfileImage">
+    <ion-img [src]="(myStoredProfileImage | async)?.image_src">
 
     </ion-img>
   </ion-avatar>

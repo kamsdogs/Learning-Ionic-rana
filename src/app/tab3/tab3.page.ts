@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 const { Camera } = Plugins;
 
@@ -10,11 +13,25 @@ const { Camera } = Plugins;
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  myProfileImage;
+  myStoredProfileImage: Observable<any>;
+  uid: any;
   constructor(
+    private _angularFireStore: AngularFirestore,
+    private _angularFireAuth: AngularFireAuth,
     private _alertController: AlertController
   ) {
-
+    this._angularFireAuth.authState.subscribe((user)=>{
+      if(user){
+        this.uid = user.uid;
+        console.log(this.uid)
+      } else{
+        this.uid = null;
+      }
+    });
+    this.myStoredProfileImage = _angularFireStore
+    .collection("users")
+    .doc(this.uid)
+    .valueChanges()
   }
 
   async selectImageSource() {
@@ -34,7 +51,12 @@ export class Tab3Page {
                 source: CameraSource.Prompt,
                 resultType: CameraResultType.Uri
               });
-              this.myProfileImage = image.webPath
+              this._angularFireStore
+                .collection("users")
+                .doc((await this._angularFireAuth.currentUser).uid)
+                .set({
+                  image_src: image.webPath
+                })
             }
           }
         ]
