@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { ActivityVideoPage } from '../activity-video/activity-video.page';
 import { ActivityService } from '../activity.service';
 import { Activity } from '../types';
-import { Plugins } from '@capacitor/core';
+import { Plugins, Toast } from '@capacitor/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 const { Share } = Plugins;
@@ -21,6 +21,7 @@ export class ActivityDetailsPage implements OnInit {
 
 
   constructor(
+    private _toastController: ToastController,
     private _angularFireStore: AngularFirestore,
     private _angularFireAuth: AngularFireAuth,
     private _router: Router,
@@ -72,7 +73,18 @@ export class ActivityDetailsPage implements OnInit {
               .collection("favourites")
               .doc((await this._angularFireAuth.currentUser).uid)
               .collection("favourites")
-              .add(activity);
+              .add(activity)
+              .then(() => {
+                const toast = this._toastController.create({
+                  message: "The Activity " + activity.name + " was added to your favourites!",
+                  duration: 3500,
+                  position: "top"
+                });
+                toast
+                  .then((toastMessage) => {
+                    toastMessage.present();
+                  })
+              });
           }
         })
     });
